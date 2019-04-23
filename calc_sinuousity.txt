@@ -1,0 +1,17 @@
+geom_from_wkt('Linestring ('||
+x(start_point($geometry) )||' '||y(start_point($geometry) )
+||', '||
+x(end_point($geometry) )||' '||y(end_point($geometry) )
+||')')
+
+
+update mastermap.topoline_candidates set sinuousity = st_length(shape)/st_length(st_makeline(st_startpoint(st_linemerge(shape)), st_endpoint(st_linemerge(shape))))
+where st_length(st_makeline(st_startpoint(st_linemerge(shape)), st_endpoint(st_linemerge(shape)))) >0
+
+
+compare length of original line with length of line between start and end point
+
+eg:
+https://gis.stackexchange.com/questions/33041/calculating-path-sinuosity-in-postgis
+https://en.wikipedia.org/wiki/Sinuosity
+
